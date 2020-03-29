@@ -1,6 +1,6 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
-
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true})
 
 function socketMain(io, socket) {
 
@@ -22,7 +22,6 @@ function socketMain(io, socket) {
 
     socket.on('perfData', (data) => {
         console.log(data)
-        console.log(process.env.MONGO_URI)
     })
 }
 
