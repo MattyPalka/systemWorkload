@@ -1,3 +1,7 @@
+require('dotenv').config()
+const mongoose = require('mongoose')
+
+
 function socketMain(io, socket) {
 
     socket.on('clientAuth', (key) => {
@@ -13,8 +17,12 @@ function socketMain(io, socket) {
         }
     })
 
+    // check if connected machine is new, if so add it
+
+
     socket.on('perfData', (data) => {
         console.log(data)
+        console.log(process.env.MONGO_URI)
     })
 }
 
