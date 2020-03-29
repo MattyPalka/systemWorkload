@@ -2,6 +2,31 @@
 // to socket.io server
 
 const os = require('os')
+const io = require('socket.io-client')
+const socket = io('http://127.0.0.1:8181')
+
+socket.on('connect', () => {
+    //first need to identify the machine
+    const networkInterface = os.networkInterfaces()
+    let macAddress
+    //loop through all network interfaces and find the non-internal one to use mac address from
+    for (let key in networkInterface) {
+        if (!networkInterface[key][0].internal) {
+            macAddress = networkInterface[key][0].mac
+            break
+        }
+    }
+
+    // Client auth with single key value
+    socket.emit('clientAuth', '41j2412jrp12rp')
+
+    // Start sendind data over 1 sec interval
+    let perfDataInterval = setInterval(() => {
+        performanceData().then((data) => {
+            socket.emit('perfData', data)
+        })
+    }, 1000)
+})
 
 function performanceData() {
     return new Promise(async (resolve, reject) => {
@@ -77,6 +102,3 @@ function getCpuLoad() {
     })
 }
 
-performanceData().then((data)=>{
-    console.log(data)
-})
