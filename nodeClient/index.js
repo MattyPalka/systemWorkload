@@ -20,6 +20,12 @@ socket.on('connect', () => {
     // Client auth with single key value
     socket.emit('clientAuth', '41j2412jrp12rp')
 
+
+    performanceData().then((data) => {
+        data.macAddress = macAddress
+        socket.emit('initPerfData', data)
+    })
+
     // Start sendind data over 1 sec interval
     let perfDataInterval = setInterval(() => {
         performanceData().then((data) => {
