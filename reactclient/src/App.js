@@ -14,14 +14,27 @@ class App extends Component {
 
   componentDidMount() {
     socket.on('data', (data) => {
-      console.log(data)
+      // some new data received
+      // make a copy of current state in order top mutate it
+      const currentState = ({ ...this.state.performanceData })
+      // make it an object with macAddress to quickly find it
+      currentState[data.macAddress] = data
+      this.setState({
+        performanceData: currentState
+      })
     })
   }
 
   render() {
+    let widgets = []
+    const data = this.state.performanceData
+    //grab each machine property from data 
+    Object.entries(data).forEach(([key, value]) => {
+      widgets.push(<Widget key={key} data={value} />)
+    })
     return (
       <div className="App">
-        <Widget />
+        {widgets}
       </div>
     )
   }

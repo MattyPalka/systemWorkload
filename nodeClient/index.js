@@ -29,6 +29,7 @@ socket.on('connect', () => {
     // Start sendind data over 1 sec interval
     let perfDataInterval = setInterval(() => {
         performanceData().then((data) => {
+            data.macAddress = macAddress
             socket.emit('perfData', data)
         })
     }, 1000)
