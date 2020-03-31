@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import socket from './utilities/socketConnection'
+import Widget from './Widget'
 
 class App extends Component {
   constructor() {
@@ -11,8 +12,8 @@ class App extends Component {
     }
   }
 
-  componentDidMount(){
-    socket.on('data', (data)=> {
+  componentDidMount() {
+    socket.on('data', (data) => {
       console.log(data)
     })
   }
@@ -20,20 +21,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-        </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-        </a>
-        </header>
+        <Widget />
       </div>
     )
   }
