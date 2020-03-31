@@ -12,10 +12,26 @@ function socketMain(io, socket) {
         } else if (key === 'jq90i1kf012fkj290saf') {
             //valid UI client
             socket.join('ui')
+            Machine.find({}, (err, docs) => {
+                docs.forEach((aMachine) => {
+                    // on load assume that all machines are offline
+                    aMachine.isActive = false
+                    io.to('ui').emit('data', aMachine)
+                })
+            })
         } else {
             //invalid client has join
             socket.disconnect(true)
         }
+    })
+
+    socket.on('disconnect', () => {
+        Machine.find({ macAddress: macAddress }, (err, docs) => {
+            if (docs.length > 0){
+                docs[0].isActive = false
+                io.to('ui').emit('data', docs[0])
+            }
+        })
     })
 
     // check if connected machine is new, if so add it
